@@ -3,8 +3,10 @@ from openpyxl import load_workbook
 from extraction_funcs import *
 from TeamsClass import Teams
 
+#Load the spreadsheet containing the raw match data
 match_sheet = load_workbook(filename="sample_prem.xlsx").active
 
+#Extract all the data in the form of lists
 teams_sorted = team_list(match_sheet,"D")
 matches_played = match_list(match_sheet,2,7)
 
@@ -15,7 +17,7 @@ for each_team in teams_sorted:
     teams.append(team)
 
 #Iterate through every match and update each object in Teams with
-#their correct goals scored
+#their correct match_outcome and goals scored dutring that match
 for each_match in matches_played:
     home_team = each_match[2]
     away_team = each_match[3]
@@ -24,6 +26,6 @@ for each_match in matches_played:
 
     for team in teams:
         if team.name == home_team:
-            team.played_match(home_goals)
+            team.played_home_match(home_goals,away_goals)
         elif team.name == away_team:
-            team.played_match(away_goals)
+            team.played_away_match(away_goals,home_goals)
