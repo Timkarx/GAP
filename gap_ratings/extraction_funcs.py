@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 
 
 def team_list(worksheet, column):
-    """This function returns an ordered list of all the teams in the list"""
+    """Returns an ordered list of teams"""
     
     teams = []
     for team in worksheet[column]:
@@ -16,12 +16,11 @@ def team_list(worksheet, column):
     elif "Referee" in teams:
         teams.remove("Referee")
     
-    sor_teams = sorted(set(teams))
-    return (sor_teams)
+    return (sorted(set(teams)))
 
 
 def match_list(worksheet, start_col, end_col):
-    """This function returns a list with information about matches"""
+    """Returns a list with info about matches"""
     
     matches_played = []
     for match in worksheet.iter_rows(min_col = start_col,
@@ -35,8 +34,8 @@ def match_list(worksheet, start_col, end_col):
 
 def load_sheet(worksheet_path):
     """Use rstrings when writing the path"""
-    """This function loads the excel spreadsheet using openpyxl"""
-    
+    """Loads the excel spreadsheet using openpyxl"""
+
     return (load_workbook(filename = worksheet_path).active)
 
 
@@ -55,7 +54,7 @@ def load_league(league,start_year,end_year):
 
 
 def extract_league_data(team_column, season_list):
-    """This function discards all the useless data in the spreadsheet"""
+    """Discards all the useless data in the spreadsheet"""
 
     season_teams_list = []
     season_match_list = []
