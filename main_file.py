@@ -1,3 +1,4 @@
+from openpyxl import Workbook
 from gap_ratings.extraction_funcs import *
 from gap_ratings.TeamsClass import Teams
 
@@ -37,10 +38,19 @@ for each_season in matches_list:
                 team.played_away_match(date,away_goals,home_goals)
                 away = team
 
-        ht_new_HA, ht_new_HD = Teams.calc_home_gap_rat(home, away,
-                                                       home_goals,away_goals)
-        at_new_AA, at_new_AD = Teams.calc_away_gap_rat(home, away,
-                                                       home_goals, away_goals)
+        ht_new_HA, ht_new_HD,ht_new_AA, ht_new_AD = Teams.calc_home_gap_rat(home,away, home_goals,away_goals)
+        at_new_AA, at_new_AD,at_new_HA, at_new_HD = Teams.calc_away_gap_rat(home,away, home_goals,away_goals)
 
-        Teams.update_gap_rat(home, away, ht_new_HA, ht_new_HD,
-                             at_new_AA, at_new_AD)
+        Teams.update_gap_rat(home,away, ht_new_HA,ht_new_HD,ht_new_AA,ht_new_AD,
+                             at_new_AA,at_new_AD,at_new_HA,at_new_HD)
+
+
+filename = 'gap_data.xlsx'
+gap_data = Workbook()
+gap_sheet = gap_data.active 
+gap_data.save(filename=filename)
+
+for team in teams:
+    for match in team.performance:
+        gap_sheet.append(match)
+gap_data.save(filename=filename)

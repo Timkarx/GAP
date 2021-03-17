@@ -46,27 +46,41 @@ class Teams:
 
     def calc_home_gap_rat(home_team, away_team, home_gap_input, away_gap_input):
         """Calculates home gap ratings after a match and stores as temporary variables"""
+        parameter_1 = 0.8
+        parameter_2 = 0.8
         
         home_team_new_HA = (home_gap_input - (home_team.gap_rat_HA + away_team.gap_rat_AD)/2)
         home_team_new_HD = (away_gap_input - (home_team.gap_rat_HD + away_team.gap_rat_AA)/2)
+        home_team_new_AA = parameter_1 * home_team_new_HA
+        home_team_new_AD = parameter_1 * home_team_new_HD
         
-        return(home_team_new_HA, home_team_new_HD)
+        return(home_team_new_HA, home_team_new_HD, home_team_new_AA, home_team_new_AD)
     
     def calc_away_gap_rat(home_team, away_team, home_gap_input, away_gap_input):
         """Calculates away gap ratings after a match and stores as temporary variables"""
+        parameter_1 = 0.8
+        parameter_2 = 0.8
         
         away_team_new_AA = (away_gap_input - (away_team.gap_rat_AA + home_team.gap_rat_HD)/2)
         away_team_new_AD = (home_gap_input - (away_team.gap_rat_AD + home_team.gap_rat_HA)/2)
+        away_team_new_HA = parameter_1 * away_team_new_AA
+        away_team_new_HD = parameter_1 * away_team_new_AD
 
-        return(away_team_new_AA, away_team_new_AD)
+        return(away_team_new_AA, away_team_new_AD, away_team_new_HA, away_team_new_HD)
 
-    def update_gap_rat(home_team, away_team, ht_HA, ht_HD, at_AA, at_AD,):
+    def update_gap_rat(home_team,away_team, ht_HA,ht_HD,ht_AA,ht_AD,
+                       at_AA,at_AD,at_HA,at_HD):
 
         lamda = 0.1
 
         home_team.gap_rat_HA += lamda*ht_HA
         home_team.gap_rat_HD += lamda*ht_HD
+        home_team.gap_rat_AA += lamda*ht_AA
+        home_team.gap_rat_AD += lamda*ht_AD
+        
         away_team.gap_rat_AA += lamda*at_AA
         away_team.gap_rat_AD += lamda*at_AD
+        away_team.gap_rat_HA += lamda*at_HA
+        away_team.gap_rat_HD += lamda*at_HD
 
 
