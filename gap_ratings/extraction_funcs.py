@@ -27,7 +27,8 @@ def match_list(worksheet, start_col, end_col):
     for match in worksheet.iter_rows(min_col = start_col,
                                     max_col = end_col,
                                      values_only=True):
-        matches_played.append(match)
+        match_l = list(match)
+        matches_played.append(match_l)
     del matches_played[0]
     return(matches_played)
 
@@ -61,10 +62,11 @@ def extract_league_data(team_column, season_list):
     for season_sheet in season_list:
         season_teams_list.append(team_list(season_sheet,team_column))
         if season_list.index(season_sheet)<3:
-            matches_played = match_list(season_sheet,3,6)
-            season_match_list.append(matches_played)
+            season_match_list.append(match_list(season_sheet,2,6))
         else:
-            matches_played = match_list(season_sheet,4,7)
-            season_match_list.append(matches_played)
+            season_matches = match_list(season_sheet,2,7)
+            for match in season_matches:
+                del match[1]
+            season_match_list.append(season_matches)
     return(season_teams_list, season_match_list)
 

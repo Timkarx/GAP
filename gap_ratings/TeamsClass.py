@@ -1,3 +1,4 @@
+import datetime
 class Teams:
     """This class describes the teams"""
     def __init__(self,name):
@@ -9,7 +10,7 @@ class Teams:
         self.record = []
         self.performance = []
 
-    def played_home_match(self, goals_scored=None, goals_conceded=None):
+    def played_home_match(self, date, goals_scored=None, goals_conceded=None):
         self.total_scored += goals_scored
         self.total_conceded += goals_conceded
         self.total_played += 1
@@ -20,11 +21,11 @@ class Teams:
         else:
             match_outcome = 'D'
         self.record.append(match_outcome)
-        game = [match_outcome, goals_scored]
+        game = [date, match_outcome, goals_scored]
         self.performance.append(game)
 
 
-    def played_away_match(self, goals_scored=None, goals_conceded=None):
+    def played_away_match(self, date, goals_scored=None, goals_conceded=None):
         self.total_scored += goals_scored
         self.total_conceded += goals_conceded
         self.total_played += 1
@@ -35,5 +36,5 @@ class Teams:
         else:
             match_outcome = 'D'
         self.record.append(match_outcome)
-        game = [match_outcome, goals_scored]
+        game = [date, match_outcome, goals_scored]
         self.performance.append(game)
