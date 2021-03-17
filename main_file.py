@@ -25,14 +25,16 @@ for each_team in unique:
 
 #Iterate through every match and update each object in Teams with
 #their correct match_outcome and goals scored dutring that match
-#for each_match in matches_played:
-#    home_team = each_match[2]
-#    away_team = each_match[3]
- #   home_goals = each_match[4]
-  #  away_goals = each_match[5]
+for each_season in matches_list:
+    for each_match in each_season:
+        date = each_match[0]
+        home_team = each_match[1]
+        away_team = each_match[2]
+        home_goals = each_match[3]
+        away_goals = each_match[4]
 
-#    for team in teams:
- #       if team.name == home_team:
-  #          team.played_home_match(home_goals,away_goals)
-   #     elif team.name == away_team:
-    #        team.played_away_match(away_goals,home_goals)
+        for team in unique_teams:
+            if team.name == home_team:
+                team.played_home_match(date,home_goals,away_goals)
+            elif team.name == away_team:
+                team.played_away_match(date,away_goals,home_goals)
