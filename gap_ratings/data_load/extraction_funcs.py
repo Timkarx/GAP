@@ -53,19 +53,19 @@ def load_leagues(league,start_year,end_year):
     return(list)
 
 
-def extract_league_data(team_column, season_list):
-    """Discards all the useless data in the spreadsheet"""
+def extract_league_data(team_column, season_list,first_col,last_col ):
+    """
+    Discards all the useless data in the spreadsheet
+    Note: team_column argument indicates which collumn the team names are located in
+    Note2: each element of season_list is a list of games per season
+
+    """
+
 
     season_teams_list = []
     season_match_list = []
     for season_sheet in season_list:
         season_teams_list.append(team_list(season_sheet,team_column))
-        if season_list.index(season_sheet)<9:
-            season_match_list.append(match_list(season_sheet,2,6))
-        else:
-            season_matches = match_list(season_sheet,2,7)
-            for match in season_matches:
-                del match[1]
-            season_match_list.append(season_matches)
+        season_match_list.append(match_list(season_sheet,first_col,last_col))
     return(season_teams_list, season_match_list)
 

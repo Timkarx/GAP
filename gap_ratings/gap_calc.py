@@ -17,7 +17,7 @@ def kick_off(list_of_matches, list_of_teams, date_idx, home_team_idx, away_team_
             away_team = each_match[away_team_idx]
             home_goals = each_match[home_gs_idx]
             away_goals = each_match[away_gs_idx]
-            if home_team_idx is int:
+            if home_team_idx is not None:
                 home_gap = each_match[home_gap_idx]
                 away_gap = each_match[away_gap_idx]
 
@@ -29,10 +29,8 @@ def kick_off(list_of_matches, list_of_teams, date_idx, home_team_idx, away_team_
                     team.played_away_match(date,away_goals,home_goals)
                     away = team
 
-            ht_new_HA, ht_new_HD,ht_new_AA, ht_new_AD = Teams.calc_home_gap_rat(home,away,
-                                                                                home_goals,away_goals)
-            at_new_AA, at_new_AD,at_new_HA, at_new_HD = Teams.calc_away_gap_rat(home,away,
-                                                                                home_goals,away_goals)
+            ht_new_HA, ht_new_HD,ht_new_AA, ht_new_AD = Teams.calc_home_gap_rat(home,away,home_gap,away_gap)
+            at_new_AA, at_new_AD,at_new_HA, at_new_HD = Teams.calc_away_gap_rat(home,away,home_gap,away_gap)
 
             Teams.update_gap_rat(home,away, ht_new_HA,ht_new_HD,ht_new_AA,ht_new_AD,
                                  at_new_AA,at_new_AD,at_new_HA,at_new_HD)
