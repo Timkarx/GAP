@@ -1,14 +1,14 @@
 from openpyxl import Workbook
-from gap_ratings.extraction_funcs import *
-from gap_ratings.TeamsClass import Teams
+from gap_ratings.data_load.extraction_funcs import *
+from gap_ratings.gap_calc import *
 
 
 #Load and extract data
-season_list = load_league('Prem',16,21)
-teams_list , matches_list = extract_league_data('D',season_list)
-    
+teams_list , matches_list = extract_league_data('D',load_leagues('Prem',
+                                                                 10,21))
 
-#Create a list of teams where each member is a Teams class object
+
+#Create a list of teams where each member is a Teams class instance
 all_teams = []
 for season in teams_list:
     for each_team in season:
@@ -20,37 +20,21 @@ for each_team in all_teams:
     teams.append(Teams(each_team))
 
 
-#Iterate through every match and update each object in Teams with
-#their correct match_outcome and goals scored dutring that match
-for each_season in matches_list:
-    for each_match in each_season:
-        date = each_match[0]
-        home_team = each_match[1]
-        away_team = each_match[2]
-        home_goals = each_match[3]
-        away_goals = each_match[4]
-
-        for team in teams:
-            if team.name == home_team:
-                team.played_home_match(date,home_goals,away_goals)
-                home = team
-            elif team.name == away_team:
-                team.played_away_match(date,away_goals,home_goals)
-                away = team
-
-        ht_new_HA, ht_new_HD,ht_new_AA, ht_new_AD = Teams.calc_home_gap_rat(home,away, home_goals,away_goals)
-        at_new_AA, at_new_AD,at_new_HA, at_new_HD = Teams.calc_away_gap_rat(home,away, home_goals,away_goals)
-
-        Teams.update_gap_rat(home,away, ht_new_HA,ht_new_HD,ht_new_AA,ht_new_AD,
-                             at_new_AA,at_new_AD,at_new_HA,at_new_HD)
+#Load up the initial gap_ratings
 
 
+#Simulate the GAP inputs
+kick_off(matches_list, teams,0,1,2,3,4)
+
+
+#Save and export the data to an excel spreadsheet
 filename = 'gap_data.xlsx'
-gap_data = Workbook()
-gap_sheet = gap_data.active 
+gap_data = Workbook() 
 gap_data.save(filename=filename)
 
 for team in teams:
+    team_sheet = gap_data.create_sheet(team.name)
     for match in team.performance:
-        gap_sheet.append(match)
+        team_sheet.append(match)
+
 gap_data.save(filename=filename)
