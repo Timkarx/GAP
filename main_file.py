@@ -5,7 +5,7 @@ from gap_ratings.gap_calc import *
 
 #Load and extract data
 teams_list , matches_list = extract_league_data('D',load_leagues('Prem',
-                                                                 10,21))
+                                                                 10,21), 2,13)
 
 
 #Create a list of teams where each member is a Teams class instance
@@ -24,11 +24,11 @@ for each_team in all_teams:
 
 
 #Simulate the GAP inputs
-kick_off(matches_list, teams,0,1,2,3,4)
+kick_off(matches_list, teams,0,1,2,3,4,10,11)
 
 
 #Save and export the data to an excel spreadsheet
-filename = 'gap_data.xlsx'
+filename = 'prem_gap_data_shots.xlsx'
 gap_data = Workbook() 
 gap_data.save(filename=filename)
 
