@@ -1,14 +1,42 @@
+import sys
+sys.path.insert(1,r'C:\Users\Tim\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\site-packages')
+
 from openpyxl import Workbook
 from gap_ratings.data_load.extraction_funcs import *
-from gap_ratings.gap_calc import *
+import gap_ratings.gap_calc
+
+league_prompt = (
+    "Please choose the league that you would like to analyse: (Premier_League/Ligue_1/La_Liga/Seria_A/Bundesliga) ")
+accepted_leagues = ["Premier_League", "Ligue_1", "La_Liga", "Seria_A", "Bundesliga"]
+gap_input_promt = (
+        "Please enter which match performance statistics you would like to choose as inputs to the gap rating system " +
+        "(Shots/Shots on Target): ")
+accepted_inputs = {"Shots": [9, 10], "Shots on Target": [11, 12]}
+
+# Prompt the user for the league that they want to analyse
+league = input(league_prompt)
+if league in accepted_leagues:
+    pass
+else:
+    print("The input doesn't constitute an allowed league")
+    exit()
 
 
-#Load and extract data
-teams_list , matches_list = extract_league_data('D',load_leagues('Prem',
-                                                                 10,21), 2,13)
+gap_input = input(gap_input_promt)
+if gap_input in accepted_inputs.keys():
+    home_input = accepted_inputs[gap_input][0]
+    away_input = accepted_inputs[gap_input][1]
+else:
+    print("This gap input isn't currently supported")
+    exit()
 
 
-#Create a list of teams where each member is a Teams class instance
+# Load and extract data
+teams_list, matches_list = extract_league_data('D', load_leagues(league,
+                                                                 10, 21), 2, 24)
+
+# Create a list of teams where each member is a Teams class instance
+
 all_teams = []
 for season in teams_list:
     for each_team in season:
@@ -17,24 +45,25 @@ for season in teams_list:
 all_teams = sorted(set(all_teams))
 teams = []
 for each_team in all_teams:
-    teams.append(Teams(each_team))
+    teams.append(gap_ratings.gap_calc.Teams(each_team))
 
 
-#Load up the initial gap_ratings
+# Load up the initial gap_ratings
+# ...
 
 
-#Simulate the GAP inputs
-kick_off(matches_list, teams,0,1,2,3,4,10,11)
+# Simulate the GAP inputs
+reg_data = gap_ratings.gap_calc.kick_off(matches_list, teams, 0, 1, 2, 3, 4, 22, home_input, away_input)
 
 
-#Save and export the data to an excel spreadsheet
-filename = 'prem_gap_data_shots.xlsx'
-gap_data = Workbook() 
-gap_data.save(filename=filename)
+# Save and export the data to an excel spreadsheet
+filename = f'foot_data\output\{league}\{league}_gap_data_{gap_input}.xlsx'
+workbook = Workbook()
+worksheet = gap_data.active
 
-for team in teams:
-    team_sheet = gap_data.create_sheet(team.name)
-    for match in team.performance:
-        team_sheet.append(match)
+for data_point in reg_data:
+    worksheet.append(data_point)
 
-gap_data.save(filename=filename)
+
+workbook.save(filename=filename)
+
