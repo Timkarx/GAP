@@ -10,8 +10,8 @@ league_prompt = (
 accepted_leagues = ["Premier_League", "Ligue_1", "La_Liga", "Seria_A", "Bundesliga"]
 gap_input_promt = (
         "Please enter which match performance statistics you would like to choose as inputs to the gap rating system " +
-        "(Shots/Shots on Target): ")
-accepted_inputs = {"Shots": [9, 10], "Shots on Target": [11, 12]}
+        "(Shots/Shots on Target/Corners): ")
+accepted_inputs = {"Shots": [9, 10], "Shots on Target": [11, 12], "Corners": [15,16],}
 
 # Prompt the user for the league that they want to analyse
 league = input(league_prompt)
@@ -33,7 +33,7 @@ else:
 
 # Load and extract data
 teams_list, matches_list = extract_league_data('D', load_leagues(league,
-                                                                 10, 21), 2, 24)
+                                                                 10, 21), 2, 28)
 
 # Create a list of teams where each member is a Teams class instance
 
@@ -53,13 +53,13 @@ for each_team in all_teams:
 
 
 # Simulate the GAP inputs
-reg_data = gap_ratings.gap_calc.kick_off(matches_list, teams, 0, 1, 2, 3, 4, 22, home_input, away_input)
+reg_data = gap_ratings.gap_calc.kick_off(matches_list, teams, 0, 1, 2, 3, 4, 26, home_input, away_input)
 
 
 # Save and export the data to an excel spreadsheet
 filename = f'foot_data\output\{league}\{league}_gap_data_{gap_input}.xlsx'
 workbook = Workbook()
-worksheet = gap_data.active
+worksheet = workbook.active
 
 for data_point in reg_data:
     worksheet.append(data_point)
