@@ -1,6 +1,5 @@
 from openpyxl import load_workbook
 
-
 def team_list(worksheet, column):
     """Returns an ordered list of teams"""
 
@@ -31,23 +30,16 @@ def match_list(worksheet, start_col, end_col):
     return matches_played
 
 
-def load_sheet(worksheet_path):
-    """Use rstrings when writing the path"""
-    """Loads the excel spreadsheet using openpyxl"""
-
-    return load_workbook(filename=worksheet_path).active
-
-
 def load_leagues(league, start_year, end_year):
     """Return a list of lists of games for each season"""
 
     league_list = []
     for season_start, season_end in zip(range(start_year, end_year),
                                         range((start_year + 1), (end_year + 1))):
-        season_sheet = load_sheet(fr'C:\Programming\Python' +
+        season_sheet = load_workbook(filename=fr'C:\Programming\Python' +
                                   fr'\Football_Team_Performance_Calculator\foot_data\input' +
                                   fr'\{league}\{league}_{season_start}' +
-                                  fr'{season_end}.xlsx')
+                                  fr'{season_end}.xlsx').active
         league_list.append(season_sheet)
     return league_list
 
